@@ -39,7 +39,7 @@ class App extends Component{
           value={"authorize"}
           onClick={
             (e) => {
-              this._dispatch(login());
+              this.props.dispatch(login());
             }
           }
         >{"authorize"}
