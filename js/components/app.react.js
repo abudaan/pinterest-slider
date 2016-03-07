@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
-import {checkSession, login, getBoards, fetchPinsIfNeeded} from '../actions'
+import {checkSession, login, getBoards, getPins} from '../actions/pinterest_actions'
 
 /* main react component, the only component with state */
 
@@ -10,11 +10,11 @@ class App extends Component{
 
   constructor(props){
     super(props);
-    this._dispatch = props.dispatch;
+    //this._dispatch = props.dispatch;
   }
 
   componentDidMount() {
-    this._dispatch(checkSession());
+    this.props.dispatch(checkSession());
   }
 
   componentDidUpdate() {
@@ -31,38 +31,40 @@ class App extends Component{
   render(){
 
     let loginButton
-    let boardsButton
+    let boardsMenu
 
-    if(typeof this.props.accessToken === 'undefined') {
+    if(typeof this.props.boardsById === 'undefined') {
       loginButton = (
         <button
-          value={"login"}
+          value={"authorize"}
           onClick={
             (e) => {
               this._dispatch(login());
             }
           }
-        >{"login"}
+        >{"authorize"}
         </button>
       )
     }else{
-      boardsButton = (
-        <button
-          value={"getBoards"}
-          onClick={
-            (e) => {
-              this._dispatch(getBoards());
-            }
-          }
-        >{"get boards"}
-        </button>
+      let boards = this.props.boardsById
+      let options = []
+      for(let id of Object.keys(boards)){
+        let b = boards[id]
+        options.push(<option id={id} key={id}>{b.name}</option>)
+      }
+      boardsMenu = (
+        <select
+          onChange={this.props.onSelectBoard}
+        >
+          {options}
+        </select>
       )
     }
 
     return(
       <div>
         {loginButton}
-        {boardsButton}
+        {boardsMenu}
       </div>
     );
   }
@@ -72,20 +74,27 @@ App.propTypes = {};
 
 
 const mapStateToProps = function(state){
-  const {session, login} = state;
+  const {boardsById} = state;
   console.log(state);
   return {
-    accessToken: session.accessToken || login.accessToken
+    boardsById: boardsById.boards
   }
 };
 
-const mapDispatchToProps = function(dispatch){
-
+const mapDispatchToProps = function(dispatch, ownProps){
+  return {
+    onSelectBoard: (e) => {
+      let options = e.target.options
+      let optionId = options[e.target.selectedIndex].id
+      dispatch(getPins(optionId))
+    },
+    dispatch
+  }
 };
 
 const app = connect(
-  mapStateToProps
-  //mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(App);
 
 export default app;

@@ -12,16 +12,9 @@ function session(state = {}, action){
       return Object.assign({}, state, {
         accessToken
       });
-    default:
-      return state;
-  }
-}
-
-function login(state = {}, action){
-  switch (action.type) {
     case actions.LOGGED_IN:
       return Object.assign({}, state, {
-        accessToken: action.accessToken
+        accessToken
       });
     default:
       return state;
@@ -41,7 +34,20 @@ function selectedBoard(state = 'other', action) {
 function boardsById(state = {}, action) {
   switch(action.type){
     case actions.RECEIVE_BOARDS:
-      return Object.assign({}, state, action.boards)
+      return Object.assign({}, state, {
+        boards: action.boards
+      })
+    default:
+      return state
+  }
+}
+
+function pinsById(state = {}, action) {
+  switch(action.type){
+    case actions.RECEIVE_PINS:
+      return Object.assign({}, state, {
+        pins: action.pins
+      })
     default:
       return state
   }
@@ -90,10 +96,8 @@ function postsByBoard(state = { }, action) {
 
 const rootReducer = combineReducers({
   session,
-  login,
   boardsById,
-  postsByBoard,
-  selectedBoard
+  pinsById
 })
 
 export default rootReducer;

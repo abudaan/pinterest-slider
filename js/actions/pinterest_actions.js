@@ -5,14 +5,13 @@ const PDK = window.PDK // ugly!
 
 function _login(){
   return new Promise(function (resolve, reject){
-    let session = PDK.getSession()
-    if(!session){
-      PDK.login({scope: 'read_public'}, function(e){
-        resolve(e)
-      })
-    }else{
-      resolve(session)
-    }
+    PDK.login({scope: 'read_public'}, function(response){
+      if (!response || response.error) {
+        reject(response)
+      } else {
+        resolve(response.data)
+      }
+    })
   })
 }
 
@@ -29,7 +28,6 @@ function _getBoards() {
   })
 }
 
-
 function _receiveBoards(json){
   let boards = {}
 
@@ -43,11 +41,46 @@ function _receiveBoards(json){
   }
 }
 
+function _getPins(boardId) {
+  return new Promise(function(resolve, reject){
+    PDK.request(`/boards/${boardId}/pins/`, {fields: 'image'}, function (response) {
+      if (!response || response.error) {
+        reject(response)
+      } else {
+        resolve(response.data)
+      }
+    })
+  })
+}
+
+function _receivePins(json){
+  let pins = {}
+
+  json.map(function(p){
+    pins[p.id] = p;
+  });
+
+  return {
+    type: actions.RECEIVE_PINS,
+    pins
+  }
+}
 
 export function checkSession(){
+  let session = PDK.getSession();
+
+  if(typeof session !== 'undefined'){
+    return dispatch => {
+      dispatch({
+        type: actions.GET_BOARDS
+      })
+      return _getBoards()
+        .then(e => dispatch(_receiveBoards(e)))
+    }
+  }
+
   return {
-    type: actions.CHECK_SESSION,
-    session: PDK.getSession()
+    type: actions.CHECK_SESSION
   }
 }
 
@@ -58,10 +91,10 @@ export function login(){
       type: actions.LOGIN
     })
     return _login()
-      .then(() => dispatch({
-        type: actions.LOGGED_IN,
-        accessToken: PDK.getSession().accessToken
-      }))
+      .then(() => {
+        _getBoards()
+          .then((e) => dispatch(_receiveBoards(e)))
+      });
   }
 }
 
@@ -73,6 +106,16 @@ export function getBoards() {
     })
     return _getBoards()
       .then(e => dispatch(_receiveBoards(e)))
+  }
+}
+
+export function getPins(boardId) {
+  return dispatch => {
+    dispatch({
+      type: actions.GET_PINS
+    })
+    return _getPins(boardId)
+      .then(e => dispatch(_receivePins(e)))
   }
 }
 
