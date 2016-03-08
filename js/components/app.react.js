@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import {connect} from 'react-redux'
-import {checkSession, login, getPins, nextImage} from '../actions/pinterest_actions'
+import {checkSession, login, getPins} from '../actions/pinterest_actions'
+import ImageSlider from '../containers/image_slider'
 
 /* main react component, the only component with state */
 
@@ -56,7 +57,14 @@ class App extends Component{
         break
 
       case 'images':
-        div = <img src={images[this.props.imageIndex].url} id={this.props.imageIndex} onClick={this.props.onImageClick}/>
+        //div = <img src={images[this.props.imageIndex].url} id={this.props.imageIndex} onClick={this.props.onImageClick}/>
+        div = (
+          <ImageSlider
+            images={this.props.images}
+            index={this.props.imageIndex}
+            interval={3000}
+          />
+        )
         break
 
       default:
@@ -72,8 +80,7 @@ class App extends Component{
 }
 
 App.propTypes = {
-  onSelectBoard: PropTypes.func.isRequired,
-  onImageClick: PropTypes.func.isRequired
+  onSelectBoard: PropTypes.func.isRequired
 }
 
 
@@ -110,9 +117,6 @@ const mapDispatchToProps = function(dispatch, ownProps){
       let options = e.target.options
       let optionId = options[e.target.selectedIndex].id
       dispatch(getPins(optionId))
-    },
-    onImageClick: (e) => {
-      dispatch(nextImage(parseInt(e.target.id, 10)))
     },
     dispatch
   }
