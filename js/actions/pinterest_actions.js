@@ -17,14 +17,18 @@ function _receiveBoards(json){
 
 function _receivePins(json){
   let pins = {}
+  let images = []
 
   json.map(function(p){
     pins[p.id] = p;
+    images.push(p.image.original)
   });
 
   return {
     type: actions.RECEIVE_PINS,
-    pins
+    pins,
+    images,
+    numImages: images.length
   }
 }
 
@@ -75,41 +79,16 @@ export function getPins(boardId) {
 }
 
 
-/*
-function requestPins(board) {
-  return {
-    type: REQUEST_PINS,
-    board
-  }
-}
-
-function receivePins(board, json) {
-  console.log(json)
-  return {
-    type: RECEIVE_PINS,
-    board,
-    posts: json.data.children.map(child => child.data),
-    receivedAt: Date.now()
-  }
-}
-
-export function fetchPinsIfNeeded(board) {
+export function nextImage(oldIndex){
   return (dispatch, getState) => {
-    //if (shouldFetchPosts(getState(), subreddit)) {
-    return dispatch(fetchPins(board))
-    //}
+    let index = oldIndex + 1;
+    let max = getState().pinsById.numImages;
+    if(index === max){
+      index = 0;
+    }
+    dispatch({
+      type: actions.NEXT_IMAGE,
+      index
+    })
   }
 }
-*/
-/*
-function shouldFetchPosts(state, subreddit) {
-  const posts = state.postsBySubreddit[subreddit]
-  if (!posts) {
-    return true
-  } else if (posts.isFetching) {
-    return false
-  } else {
-    return posts.didInvalidate
-  }
-}
-*/

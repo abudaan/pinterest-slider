@@ -22,16 +22,6 @@ function session(state = {}, action){
   }
 }
 
-function selectedBoard(state = 'other', action) {
-  switch (action.type) {
-    case actions.SELECT_BOARD:
-      return action.board;
-    default:
-      return state;
-  }
-}
-
-
 function boardsById(state = {}, action) {
   switch(action.type){
     case actions.RECEIVE_BOARDS:
@@ -47,58 +37,29 @@ function pinsById(state = {}, action) {
   switch(action.type){
     case actions.RECEIVE_PINS:
       return Object.assign({}, state, {
-        pins: action.pins
+        pins: action.pins,
+        images: action.images,
+        numImages: action.numImages
       })
     default:
       return state
   }
 }
 
-
-function posts(state = {
-  isFetching: false,
-  didInvalidate: false,
-  items: []
-}, action) {
-  switch (action.type) {
-    case actions.INVALIDATE_BOARD:
-      return Object.assign({}, state, {
-        didInvalidate: true
-      });
-    case actions.REQUEST_PINS:
-      return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false
-      });
-    case actions.RECEIVE_PINS:
-      return Object.assign({}, state, {
-        isFetching: false,
-        didInvalidate: false,
-        items: action.posts,
-        lastUpdated: action.receivedAt
-      });
+function slider(state = {index: 0}, action){
+  switch(action.type){
+    case actions.NEXT_IMAGE:
+      return Object.assign({}, state, {index: action.index})
     default:
-      return state;
-  }
-}
-
-function postsByBoard(state = { }, action) {
-  switch (action.type) {
-    case actions.INVALIDATE_BOARD:
-    case actions.RECEIVE_PINS:
-    case actions.REQUEST_PINS:
-      return Object.assign({}, state, {
-        [action.BOARD]: posts(state[action.board], action)
-      });
-    default:
-      return state;
+      return state
   }
 }
 
 const rootReducer = combineReducers({
   session,
   boardsById,
-  pinsById
+  pinsById,
+  slider
 })
 
 export default rootReducer;
