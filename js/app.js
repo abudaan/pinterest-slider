@@ -19,8 +19,6 @@ import configureStore from './stores/configure_store';
 
 window.onload = function(){
 
-  PDK.init({appId: '4821776664906186821', cookie: true});
-
   let store = configureStore();
 
   ReactDOM.render(

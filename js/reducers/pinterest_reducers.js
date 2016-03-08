@@ -3,16 +3,17 @@ import * as actions from '../constants/action_types';
 
 
 function session(state = {}, action){
-  let accessToken;
-  if(action.session){
-    accessToken = action.session.accessToken;
-  }
+  let accessToken = action.accessToken;
   switch (action.type) {
     case actions.CHECK_SESSION:
       return Object.assign({}, state, {
         accessToken
       });
     case actions.LOGGED_IN:
+      return Object.assign({}, state, {
+        accessToken
+      });
+    case actions.GET_BOARDS:
       return Object.assign({}, state, {
         accessToken
       });

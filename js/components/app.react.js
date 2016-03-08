@@ -1,20 +1,19 @@
-import React, { Component, PropTypes } from 'react';
-import {connect} from 'react-redux';
-import {checkSession, login, getBoards, getPins} from '../actions/pinterest_actions'
+import React, { Component, PropTypes } from 'react'
+import {connect} from 'react-redux'
+import {checkSession, login, getPins} from '../actions/pinterest_actions'
 
 /* main react component, the only component with state */
 
 class App extends Component{
 
-  static displayName = 'App';
+  static displayName = 'App'
 
   constructor(props){
-    super(props);
-    //this._dispatch = props.dispatch;
+    super(props)
   }
 
   componentDidMount() {
-    this.props.dispatch(checkSession());
+    this.props.dispatch(checkSession())
   }
 
   componentDidUpdate() {
@@ -23,30 +22,25 @@ class App extends Component{
   componentWillUnmount() {
   }
 
-  onChange(){
-//    let state = SettingsStore.getSettings();
-//    this.setState(state);
-  }
-
   render(){
 
     let loginButton
     let boardsMenu
+    let boards = this.props.boardsById
 
-    if(typeof this.props.boardsById === 'undefined') {
+    if(this.props.accessToken === false) {
       loginButton = (
         <button
           value={"authorize"}
           onClick={
             (e) => {
-              this.props.dispatch(login());
+              this.props.dispatch(login())
             }
           }
         >{"authorize"}
         </button>
       )
-    }else{
-      let boards = this.props.boardsById
+    }else if(typeof boards !== 'undefined'){
       let options = []
       for(let id of Object.keys(boards)){
         let b = boards[id]
@@ -66,20 +60,21 @@ class App extends Component{
         {loginButton}
         {boardsMenu}
       </div>
-    );
+    )
   }
 }
 
-App.propTypes = {};
+App.propTypes = {}
 
 
 const mapStateToProps = function(state){
-  const {boardsById} = state;
-  console.log(state);
+  const {boardsById, session} = state
   return {
+    accessToken: session.accessToken,
     boardsById: boardsById.boards
   }
-};
+}
+
 
 const mapDispatchToProps = function(dispatch, ownProps){
   return {
@@ -90,12 +85,11 @@ const mapDispatchToProps = function(dispatch, ownProps){
     },
     dispatch
   }
-};
+}
 
 const app = connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App)
 
-export default app;
-//export default App;
+export default app

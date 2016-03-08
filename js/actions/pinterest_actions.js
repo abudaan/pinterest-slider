@@ -1,32 +1,6 @@
 import * as actions from '../constants/action_types'
-import fetch from 'isomorphic-fetch'
+import pdk from '../pdk_wrapper'
 
-const PDK = window.PDK // ugly!
-
-function _login(){
-  return new Promise(function (resolve, reject){
-    PDK.login({scope: 'read_public'}, function(response){
-      if (!response || response.error) {
-        reject(response)
-      } else {
-        resolve(response.data)
-      }
-    })
-  })
-}
-
-
-function _getBoards() {
-  return new Promise(function(resolve, reject){
-    PDK.me('boards', function (response) {
-      if (!response || response.error) {
-        reject(response)
-      } else {
-        resolve(response.data)
-      }
-    })
-  })
-}
 
 function _receiveBoards(json){
   let boards = {}
@@ -39,18 +13,6 @@ function _receiveBoards(json){
     type: actions.RECEIVE_BOARDS,
     boards
   }
-}
-
-function _getPins(boardId) {
-  return new Promise(function(resolve, reject){
-    PDK.request(`/boards/${boardId}/pins/`, {fields: 'image'}, function (response) {
-      if (!response || response.error) {
-        reject(response)
-      } else {
-        resolve(response.data)
-      }
-    })
-  })
 }
 
 function _receivePins(json){
@@ -67,54 +29,47 @@ function _receivePins(json){
 }
 
 export function checkSession(){
-  let session = PDK.getSession();
-
-  if(typeof session !== 'undefined'){
+  let accessToken = pdk.accessToken
+  if(accessToken !== false){
     return dispatch => {
       dispatch({
-        type: actions.GET_BOARDS
+        type: actions.GET_BOARDS,
+        accessToken
       })
-      return _getBoards()
+      return pdk.getBoards()
         .then(e => dispatch(_receiveBoards(e)))
     }
   }
 
   return {
-    type: actions.CHECK_SESSION
+    type: actions.CHECK_SESSION,
+    accessToken
   }
 }
 
-
 export function login(){
-  return (dispatch, getState) => {
-    dispatch({
-      type: actions.LOGIN
-    })
-    return _login()
+  return dispatch => {
+    // dispatch({
+    //   type: actions.LOGIN
+    // })
+    return pdk.login()
       .then(() => {
-        _getBoards()
+        dispatch({
+          type: actions.LOGGED_IN,
+          accessToken: pdk.getAccessToken()
+        })
+        pdk.getBoards()
           .then((e) => dispatch(_receiveBoards(e)))
       });
   }
 }
 
-
-export function getBoards() {
-  return dispatch => {
-    dispatch({
-      type: actions.GET_BOARDS
-    })
-    return _getBoards()
-      .then(e => dispatch(_receiveBoards(e)))
-  }
-}
-
 export function getPins(boardId) {
   return dispatch => {
-    dispatch({
-      type: actions.GET_PINS
-    })
-    return _getPins(boardId)
+    // dispatch({
+    //   type: actions.GET_PINS
+    // })
+    return pdk.getPins(boardId)
       .then(e => dispatch(_receivePins(e)))
   }
 }
