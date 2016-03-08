@@ -92,3 +92,13 @@ export function nextImage(oldIndex){
     })
   }
 }
+
+export function resize(width, height){
+  return dispatch => {
+    dispatch({
+      type: actions.RESIZE,
+      width,
+      height
+    })
+  }
+}

@@ -44,7 +44,7 @@ class App extends Component{
         break
 
       case 'boards':
-        let options = []
+        let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
         for(let id of Object.keys(boards)){
           let b = boards[id]
           options.push(<option id={id} key={id}>{b.name}</option>)
@@ -116,7 +116,10 @@ const mapDispatchToProps = function(dispatch, ownProps){
     onSelectBoard: (e) => {
       let options = e.target.options
       let optionId = options[e.target.selectedIndex].id
-      dispatch(getPins(optionId))
+      console.log(optionId)
+      if(optionId !== 'choose'){
+        dispatch(getPins(optionId))
+      }
     },
     dispatch
   }

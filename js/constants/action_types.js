@@ -6,3 +6,4 @@ export const RECEIVE_BOARDS = 'receiveBoards';
 export const GET_PINS = 'getPins';
 export const RECEIVE_PINS = 'receivePins';
 export const NEXT_IMAGE = 'nextImage';
+export const RESIZE = 'resize';
