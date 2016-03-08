@@ -62,7 +62,7 @@ class App extends Component{
           <ImageSlider
             images={this.props.images}
             index={this.props.imageIndex}
-            interval={3000}
+            interval={6000}
           />
         )
         break
