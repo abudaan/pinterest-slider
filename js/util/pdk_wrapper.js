@@ -1,4 +1,5 @@
-const PDK = window.PDK;
+const PDK = window.PDK
+const appKey = '4821776664906186821' // replace this key with your own key!
 
 function login(){
   return new Promise(function (resolve, reject){
@@ -43,7 +44,7 @@ function getAccessToken(){
 }
 
 function init(){
-  PDK.init({appId: '4821776664906186821', cookie: true})
+  PDK.init({appId: appKey, cookie: true})
   return {
     accessToken: getAccessToken(),
     login,

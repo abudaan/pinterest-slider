@@ -1,24 +1,24 @@
-import { combineReducers } from 'redux';
-import * as actions from '../constants/action_types';
+import { combineReducers } from 'redux'
+import * as actions from '../constants/action_types'
 
 
 function session(state = {}, action){
-  let accessToken = action.accessToken;
+  let accessToken = action.accessToken
   switch (action.type) {
     case actions.CHECK_SESSION:
       return Object.assign({}, state, {
         accessToken
-      });
+      })
     case actions.LOGGED_IN:
       return Object.assign({}, state, {
         accessToken
-      });
+      })
     case actions.GET_BOARDS:
       return Object.assign({}, state, {
         accessToken
-      });
+      })
     default:
-      return state;
+      return state
   }
 }
 
@@ -62,4 +62,4 @@ const rootReducer = combineReducers({
   slider
 })
 
-export default rootReducer;
+export default rootReducer

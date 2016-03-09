@@ -6,8 +6,8 @@ function _receiveBoards(json){
   let boards = {}
 
   json.map(function(b){
-    boards[b.id] = b;
-  });
+    boards[b.id] = b
+  })
 
   return {
     type: actions.RECEIVE_BOARDS,
@@ -20,9 +20,9 @@ function _receivePins(json){
   let images = []
 
   json.map(function(p){
-    pins[p.id] = p;
+    pins[p.id] = p
     images.push(p.image.original)
-  });
+  })
 
   return {
     type: actions.RECEIVE_PINS,
@@ -64,7 +64,7 @@ export function login(){
         })
         pdk.getBoards()
           .then((e) => dispatch(_receiveBoards(e)))
-      });
+      })
   }
 }
 
@@ -81,10 +81,10 @@ export function getPins(boardId) {
 
 export function nextImage(oldIndex){
   return (dispatch, getState) => {
-    let index = oldIndex + 1;
-    let max = getState().pinsById.numImages;
+    let index = oldIndex + 1
+    let max = getState().pinsById.numImages
     if(index === max){
-      index = 0;
+      index = 0
     }
     dispatch({
       type: actions.NEXT_IMAGE,
