@@ -1,6 +1,12 @@
 #### Pinterest Image Slider
 
-Pinterest users can select a public board and this app displays all images in that board one after each other by using a short cross-fade between 2 consecutive images.
+This app lets Pinterest users select a public board and all images in that board will be displayed one after each other by using a short cross-fade between 2 consecutive images.
+
+1. Login to Pinterest and allow the app to read your public boards
+2. Your public boards will be displayed in a drop down menu
+3. After selecting a board the app starts displaying all images in the chosen board
+4. The slide show loops: after the last image the show will start again with the first image
+
 
 #### Installation
 
