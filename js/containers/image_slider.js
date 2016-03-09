@@ -17,17 +17,15 @@ class ImageSlider extends Component{
     }, this.props.interval)
   }
 
-  componentDidUpdate() {
-  }
-
   componentWillUnmount() {
     clearInterval(this.timer)
   }
 
   render(){
+    let image = this.props.images[this.props.index]
     return (
       <Image
-        url={this.props.url}
+        url={image.url}
         index={this.props.index}
         onClick={this.props.onClick}
       />
@@ -37,11 +35,12 @@ class ImageSlider extends Component{
 
 
 const mapStateToProps = (state, ownProps) => {
-  let image = ownProps.images[ownProps.index]
+  const {pinsById, slider} = state
+
   return {
-    url: image.url,
-    index: ownProps.index,
-    interval: ownProps.interval
+    images: pinsById.images,
+    index: slider.index,
+    interval: slider.interval
   }
 }
 
@@ -56,13 +55,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 
 ImageSlider.propTypes = {
-  interval: PropTypes.number.isRequired
+  dispatch: PropTypes.func.isRequired,
+  images: PropTypes.array.isRequired,
+  index: PropTypes.number.isRequired,
+  interval: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 
-ImageSlider = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ImageSlider)
-
-export default ImageSlider

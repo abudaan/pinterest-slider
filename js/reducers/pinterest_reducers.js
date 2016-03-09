@@ -46,10 +46,12 @@ function pinsById(state = {}, action) {
   }
 }
 
-function slider(state = {index: 0, width: 0, height: 0}, action){
+function slider(state = {index: 0, interval: 6000}, action){
   switch(action.type){
     case actions.NEXT_IMAGE:
       return Object.assign({}, state, {index: action.index})
+    case actions.SET_INTERVAL:
+      return Object.assign({}, state, {interval: action.interval})
     default:
       return state
   }
