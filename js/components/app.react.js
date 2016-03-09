@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import {connect} from 'react-redux'
 import {checkSession, login, getPins} from '../actions/pinterest_actions'
 import ImageSlider from '../containers/image_slider'
+import Select from '../components/select'
 
 /* main react component, the only component with state */
 
@@ -44,16 +45,17 @@ class App extends Component{
         break
 
       case 'boards':
-        let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
-        for(let id of Object.keys(boards)){
-          let b = boards[id]
-          options.push(<option id={id} key={id}>{b.name}</option>)
-        }
-        div = (
-          <select onChange={this.props.onSelectBoard}>
-            {options}
-          </select>
-        )
+        // let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
+        // for(let id of Object.keys(boards)){
+        //   let b = boards[id]
+        //   options.push(<option id={id} key={id}>{b.name}</option>)
+        // }
+        // div = (
+        //   <select onChange={this.props.onSelectBoard}>
+        //     {options}
+        //   </select>
+        // )
+          div = <Select options={this.props.boards} />
         break
 
       case 'images':

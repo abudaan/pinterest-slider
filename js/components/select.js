@@ -1,3 +1,16 @@
+        // let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
+        // for(let id of Object.keys(boards)){
+        //   let b = boards[id]
+        //   options.push(<option id={id} key={id}>{b.name}</option>)
+        // }
+        // div = (
+        //   <select onChange={this.props.onSelectBoard}>
+        //     {options}
+        //   </select>
+        // )
+
+
+
 import React, {PropTypes} from 'react'
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group')
 
