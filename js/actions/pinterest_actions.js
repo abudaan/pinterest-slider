@@ -1,5 +1,5 @@
 import * as actions from '../constants/action_types'
-import pdk from '../pdk_wrapper'
+import pdk from '../util/pdk_wrapper'
 
 
 function _receiveBoards(json){
@@ -89,16 +89,6 @@ export function nextImage(oldIndex){
     dispatch({
       type: actions.NEXT_IMAGE,
       index
-    })
-  }
-}
-
-export function resize(width, height){
-  return dispatch => {
-    dispatch({
-      type: actions.RESIZE,
-      width,
-      height
     })
   }
 }

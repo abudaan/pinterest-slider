@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import {connect} from 'react-redux'
 import {checkSession, login, getPins} from '../actions/pinterest_actions'
 import ImageSlider from '../containers/image_slider'
-import Select from '../components/select'
+import SelectBoard from '../components/select_board'
 
 /* main react component, the only component with state */
 
@@ -18,48 +18,30 @@ class App extends Component{
     this.props.dispatch(checkSession())
   }
 
-  componentDidUpdate() {
-  }
-
-  componentWillUnmount() {
-  }
-
   render(){
-
     let div
-    let boards = this.props.boards
-    let images = this.props.images
 
     switch(this.props.displayState){
       case 'authorize':
         div = (
           <button
-            onClick={
-              () => {
-                this.props.dispatch(login())
-              }
-            }
-          >{"authorize"}
+            onClick={this.props.onAuthorize}
+          >
+            {"authorize"}
           </button>
         )
         break
 
       case 'boards':
-        // let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
-        // for(let id of Object.keys(boards)){
-        //   let b = boards[id]
-        //   options.push(<option id={id} key={id}>{b.name}</option>)
-        // }
-        // div = (
-        //   <select onChange={this.props.onSelectBoard}>
-        //     {options}
-        //   </select>
-        // )
-          div = <Select options={this.props.boards} />
+        div = (
+          <SelectBoard
+            options={this.props.boards}
+            onChange={this.props.onSelectBoard}
+          />
+        )
         break
 
       case 'images':
-        //div = <img src={images[this.props.imageIndex].url} id={this.props.imageIndex} onClick={this.props.onImageClick}/>
         div = (
           <ImageSlider
             images={this.props.images}
@@ -73,11 +55,7 @@ class App extends Component{
         div = <div>{'...'}</div>
     }
 
-    return(
-      <div>
-        {div}
-      </div>
-    )
+    return div
   }
 }
 
@@ -112,13 +90,14 @@ const mapStateToProps = function(state, ownProps){
 }
 
 
-const mapDispatchToProps = function(dispatch, ownProps){
-  const index = ownProps.imageIndex;
+const mapDispatchToProps = function(dispatch){
   return {
+    onAuthorize: () => {
+      dispatch(login())
+    },
     onSelectBoard: (e) => {
       let options = e.target.options
       let optionId = options[e.target.selectedIndex].id
-      console.log(optionId)
       if(optionId !== 'choose'){
         dispatch(getPins(optionId))
       }

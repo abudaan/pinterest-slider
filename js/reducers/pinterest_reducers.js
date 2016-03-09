@@ -50,8 +50,6 @@ function slider(state = {index: 0, width: 0, height: 0}, action){
   switch(action.type){
     case actions.NEXT_IMAGE:
       return Object.assign({}, state, {index: action.index})
-    case actions.RESIZE:
-      return Object.assign({}, state, {width: action.width, height: action.height})
     default:
       return state
   }
