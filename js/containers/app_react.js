@@ -18,29 +18,23 @@ class App extends Component{
   }
 
   render(){
-    let div
-
     switch(this.props.displayState){
       case 'authorize':
-        div =
+        return (
           <button onClick={this.props.onAuthorize}>
             {"authorize"}
           </button>
-        break
+        )
 
       case 'boards':
-        div = <SelectBoard />
-        break
+        return <SelectBoard />
 
       case 'images':
-        div = <ImageSlider />
-        break
+        return <ImageSlider />
 
       default:
-        div = <div>{'...'}</div>
+        return <div>{'...'}</div>
     }
-
-    return div
   }
 }
 
