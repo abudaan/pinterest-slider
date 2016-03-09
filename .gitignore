@@ -4,4 +4,5 @@ build
 *.csr
 *.key
 *.key.secure
+*.lock
 login.html
