@@ -39,14 +39,14 @@ function getPins(boardId) {
 }
 
 function getAccessToken(){
-  let session = PDK.getSession() || {accessToken: false}
+  let session = PDK.getSession() || {accessToken: ''}
   return session.accessToken
 }
 
 function init(){
   PDK.init({appId: appKey, cookie: true})
   return {
-    accessToken: getAccessToken(),
+    //accessToken: getAccessToken(),
     login,
     getAccessToken,
     getBoards,

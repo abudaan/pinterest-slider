@@ -35,7 +35,7 @@
   "scripts": {
     "start": "ws",
     "start-secure": "ws --key ws.key --cert ws.crt",
-    "watch": "watchify js/app.js -t [babelify --presets [ es2015 react ] --plugins [ transform-class-properties ] ] -o build/app.js --debug --verbose",
-    "build": "browserify js/app.js -t [ babelify --presets [ es2015 react ] --plugins [ transform-class-properties ] ] --debug | exorcist build/app.js.map | uglifyjs -c > build/app.js"
+    "watch": "watchify js/index.js -t [babelify --presets [ es2015 react ] --plugins [ transform-class-properties ] ] -o build/app.js --debug --verbose",
+    "build": "browserify js/index.js -t [ babelify --presets [ es2015 react ] --plugins [ transform-class-properties ] ] --debug | exorcist build/app.js.map | uglifyjs -c > build/app.js"
   }
 }

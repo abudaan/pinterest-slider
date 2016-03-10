@@ -12,16 +12,28 @@ class ImageSlider extends Component{
   }
 
   componentDidMount() {
-    this.timer = setInterval(() => {
-      this.props.dispatch(nextImage(this.props.index))
-    }, this.props.interval)
+    // this.timer = setInterval(() => {
+    //   this.props.dispatch(nextImage(this.props.index))
+    // }, this.props.interval)
   }
 
   componentWillUnmount() {
     clearInterval(this.timer)
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.displayState === 'run'){
+      this.timer = setInterval(() => {
+        this.props.dispatch(nextImage(this.props.index))
+      }, this.props.interval)
+    }
+  }
+
   render(){
+    if(this.props.displayState !== 'run'){
+      return false
+    }
+
     let image = this.props.images[this.props.index]
     return (
       <Image
@@ -38,7 +50,8 @@ const mapStateToProps = (state, ownProps) => {
   const {pinsById, slider} = state
 
   return {
-    images: pinsById.images,
+    displayState: ownProps.displayState,
+    images: pinsById.images || null,
     index: slider.index,
     interval: slider.interval
   }
@@ -55,6 +68,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 
 ImageSlider.propTypes = {
+  displayState: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   images: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,

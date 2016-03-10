@@ -11,6 +11,7 @@ function _receiveBoards(json){
 
   return {
     type: actions.RECEIVE_BOARDS,
+    displayState: 'configure',
     boards
   }
 }
@@ -26,6 +27,7 @@ function _receivePins(json){
 
   return {
     type: actions.RECEIVE_PINS,
+    displayState: 'run',
     pins,
     images,
     numImages: images.length
@@ -33,12 +35,12 @@ function _receivePins(json){
 }
 
 export function checkSession(){
-  let accessToken = pdk.accessToken
-  if(accessToken !== false){
+  let accessToken = pdk.getAccessToken()
+  if(accessToken !== ''){
     return dispatch => {
       dispatch({
         type: actions.GET_BOARDS,
-        accessToken
+        displayState: 'configure'
       })
       return pdk.getBoards()
         .then(e => dispatch(_receiveBoards(e)))
@@ -47,7 +49,7 @@ export function checkSession(){
 
   return {
     type: actions.CHECK_SESSION,
-    accessToken
+    displayState: 'authorize'
   }
 }
 
@@ -59,7 +61,8 @@ export function login(){
     return pdk.login()
       .then(() => {
         dispatch({
-          type: actions.LOGGED_IN
+          type: actions.LOGGED_IN,
+          displayState: 'configure'
         })
         pdk.getBoards()
           .then((e) => dispatch(_receiveBoards(e)))

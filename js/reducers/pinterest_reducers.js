@@ -3,26 +3,30 @@ import * as actions from '../constants/action_types'
 
 
 function session(state = {}, action){
-  let accessToken = action.accessToken
+  let displayState = action.displayState
   switch (action.type) {
     case actions.CHECK_SESSION:
       return Object.assign({}, state, {
-        accessToken
+        displayState
       })
     case actions.LOGGED_IN:
       return Object.assign({}, state, {
-        accessToken
+        displayState
       })
     case actions.GET_BOARDS:
       return Object.assign({}, state, {
-        accessToken
+        displayState
+      })
+    case actions.RECEIVE_PINS:
+      return Object.assign({}, state, {
+        displayState
       })
     default:
       return state
   }
 }
 
-function boardsById(state = {}, action) {
+function boardsById(state = {boards: {}}, action) {
   switch(action.type){
     case actions.RECEIVE_BOARDS:
       return Object.assign({}, state, {
@@ -37,7 +41,7 @@ function boardsById(state = {}, action) {
   }
 }
 
-function pinsById(state = {}, action) {
+function pinsById(state = {images: []}, action) {
   switch(action.type){
     case actions.RECEIVE_PINS:
       return Object.assign({}, state, {

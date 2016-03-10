@@ -1,8 +1,10 @@
 html, body{
   background-color: black;
   // overflow: hidden;
+  font-family: monospace;
   width: 100%;
   height: 100%;
+  color: white;
 }
 
 select, button{

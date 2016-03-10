@@ -1,16 +1,16 @@
 import React, {PropTypes} from 'react'
 
-let labelStyle = {
-  // width: '140px',
-  // height: '1.9em',
-  // display: 'inline-block',
-  // color: 'white'
+const labelStyle = {
+  width: '140px',
+  height: '1.9em',
+  display: 'inline-block',
+  color: 'red'
 }
 
-let inputStyle = {
-  // verticalAlign: 'middle',
-  // //marginBottom: '5px',
-  // width: '200px'
+const rangeStyle = {
+  verticalAlign: 'middle',
+  //marginBottom: '5px',
+  width: '200px'
 }
 
 /* React wrapper for input type Range */
@@ -28,12 +28,23 @@ class Slider extends React.Component{
       }
       return {__html: label}
     }
+
+    let _labelStyle = labelStyle;
+    let _rangeStyle = rangeStyle;
+
+    if(typeof this.props.classLabel !== 'undefined'){
+      _labelStyle = {};
+    }
+    if(typeof this.props.classRange !== 'undefined'){
+      _rangeStyle = {};
+    }
+
     return (
       <div>
-        <label className={this.props.classLabel} htmlFor={this.props.id} style={labelStyle} dangerouslySetInnerHTML={createLabel(this.props)} />
+        <label className={this.props.classLabel} htmlFor={this.props.id} style={_labelStyle} dangerouslySetInnerHTML={createLabel(this.props)} />
         <input
           className={this.props.classRange}
-          style={inputStyle}
+          style={_rangeStyle}
           onMouseUp={this.props.onMouseUp}
           onMouseDown={this.props.onMouseDown}
           id={this.props.id}

@@ -10,6 +10,11 @@ class Controls extends Component{
   }
 
   render(){
+
+    if(this.props.displayState !== 'configure'){
+      return false
+    }
+
     let boards = this.props.boards;
     let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
     for(let id of Object.keys(boards)){
@@ -31,7 +36,7 @@ class Controls extends Component{
           max={20000}
           step={5}
           value={this.props.interval}
-          onChange={e => dispatch(selectInterval(e.target.valueAsNumber))}
+          onChange={e => this.props.dispatch(selectInterval(e.target.valueAsNumber))}
         />
 
         <button
@@ -47,8 +52,10 @@ class Controls extends Component{
 
 
 Controls.propTypes = {
-  selectBoard: PropTypes.func.isRequired,
   boards: PropTypes.object.isRequired,
+  displayState: PropTypes.string.isRequired,
+  interval: PropTypes.number.isRequired,
+  selectBoard: PropTypes.func.isRequired,
   selectedBoard: PropTypes.string
 }
 
@@ -63,7 +70,7 @@ const mapStateToProps = function(state){
 }
 
 
-const mapDispatchToProps = function(dispatch, ownProps){
+const mapDispatchToProps = function(dispatch){
   return {
     selectBoard: (e) => {
       let options = e.target.options
