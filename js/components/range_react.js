@@ -1,15 +1,16 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
 let labelStyle = {
-  width: '140px',
-  height: '1.9em',
-  display: 'inline-block'
+  // width: '140px',
+  // height: '1.9em',
+  // display: 'inline-block',
+  // color: 'white'
 }
 
 let inputStyle = {
-  verticalAlign: 'middle',
-  //marginBottom: '5px',
-  width: '200px'
+  // verticalAlign: 'middle',
+  // //marginBottom: '5px',
+  // width: '200px'
 }
 
 /* React wrapper for input type Range */
@@ -29,8 +30,9 @@ class Slider extends React.Component{
     }
     return (
       <div>
-        <label htmlFor={this.props.id} style={labelStyle} dangerouslySetInnerHTML={createLabel(this.props)} />
+        <label className={this.props.classLabel} htmlFor={this.props.id} style={labelStyle} dangerouslySetInnerHTML={createLabel(this.props)} />
         <input
+          className={this.props.classRange}
           style={inputStyle}
           onMouseUp={this.props.onMouseUp}
           onMouseDown={this.props.onMouseDown}
@@ -48,13 +50,15 @@ class Slider extends React.Component{
 }
 
 Slider.propTypes = {
-  id: React.PropTypes.string,
-  label: React.PropTypes.string,
-  max: React.PropTypes.number,
-  min: React.PropTypes.number,
-  onChange: React.PropTypes.function,
-  step: React.PropTypes.number,
-  value: React.PropTypes.number
+  id: PropTypes.string,
+  label: PropTypes.string,
+  max: PropTypes.number,
+  min: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+  step: PropTypes.number,
+  value: PropTypes.number,
+  classLabel: PropTypes.string,
+  classRange: PropTypes.string
 }
 
 export default Slider

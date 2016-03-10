@@ -59,8 +59,7 @@ export function login(){
     return pdk.login()
       .then(() => {
         dispatch({
-          type: actions.LOGGED_IN,
-          accessToken: pdk.getAccessToken()
+          type: actions.LOGGED_IN
         })
         pdk.getBoards()
           .then((e) => dispatch(_receiveBoards(e)))
@@ -89,6 +88,24 @@ export function nextImage(oldIndex){
     dispatch({
       type: actions.NEXT_IMAGE,
       index
+    })
+  }
+}
+
+export function selectInterval(interval){
+  return (dispatch) => {
+    dispatch({
+      type: actions.SELECT_INTERVAL,
+      interval
+    })
+  }
+}
+
+export function selectBoard(board){
+  return (dispatch) => {
+    dispatch({
+      type: actions.SELECT_BOARD,
+      board
     })
   }
 }

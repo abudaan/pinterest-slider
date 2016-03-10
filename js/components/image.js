@@ -6,9 +6,9 @@ const Image = ({url, index, width, height, onClick }) => {
     <ReactCSSTransitionGroup
       transitionName={'image'}
       transitionAppear={true}
-      transitionAppearTimeout={1000}
-      transitionEnterTimeout={1000}
-      transitionLeaveTimeout={1000}
+      transitionAppearTimeout={1200}
+      transitionEnterTimeout={1200}
+      transitionLeaveTimeout={1200}
     >
       <img
         src={url}

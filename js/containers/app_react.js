@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import {connect} from 'react-redux'
 import {checkSession, login} from '../actions/pinterest_actions'
 import ImageSlider from './image_slider'
-import SelectBoard from './select_board'
+import Controls from './controls'
 
 
 class App extends Component{
@@ -26,10 +26,10 @@ class App extends Component{
           </button>
         )
 
-      case 'boards':
-        return <SelectBoard />
+      case 'configure':
+        return <Controls />
 
-      case 'images':
+      case 'run':
         return <ImageSlider />
 
       default:
@@ -47,13 +47,15 @@ App.propTypes = {
 
 
 const mapStateToProps = function(state){
-  const {boardsById, pinsById} = state
-  let displayState = 'authorize'
+  const {session, boardsById, pinsById} = state
+  let displayState = ''
 
-  if(typeof pinsById.images !== 'undefined'){
-    displayState = 'images'
+  if(session.accessToken === false){
+    displayState = 'authorize'
+  }else if(typeof pinsById.images !== 'undefined'){
+    displayState = 'run'
   }else if(typeof boardsById.boards !== 'undefined'){
-    displayState = 'boards'
+    displayState = 'configure'
   }
 
   return {

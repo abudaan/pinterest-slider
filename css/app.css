@@ -38,7 +38,7 @@ img{
 
 .image-enter.image-enter-active {
   opacity: 1;
-  transition: opacity 1000ms ease-in;
+  transition: opacity 1200ms ease-in;
 }
 
 .image-leave {
@@ -47,7 +47,7 @@ img{
 
 .image-leave.image-leave-active {
   opacity: 0.01;
-  transition: opacity 1000ms ease-in;
+  transition: opacity 1200ms ease-in;
 }
 
 .image-appear {
@@ -56,5 +56,19 @@ img{
 
 .image-appear.image-appear-active {
   opacity: 1;
-  transition: opacity 1000ms ease-in;
+  transition: opacity 1200ms ease-in;
+}
+
+.label-interval{
+  font-family: monospace;
+  font-size: 15px;
+  margin: 20px;
+  color: white;
+  width: 150px;
+  display: inline-block;
+}
+
+.range-interval{
+  vertical-align: text-bottom;
+  width: 400px;
 }

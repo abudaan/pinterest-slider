@@ -28,6 +28,10 @@ function boardsById(state = {}, action) {
       return Object.assign({}, state, {
         boards: action.boards
       })
+    case actions.SELECT_BOARD:
+      return Object.assign({}, state, {
+        selectedBoard: action.board
+      })
     default:
       return state
   }
@@ -50,7 +54,7 @@ function slider(state = {index: 0, interval: 6000}, action){
   switch(action.type){
     case actions.NEXT_IMAGE:
       return Object.assign({}, state, {index: action.index})
-    case actions.SET_INTERVAL:
+    case actions.SELECT_INTERVAL:
       return Object.assign({}, state, {interval: action.interval})
     default:
       return state
