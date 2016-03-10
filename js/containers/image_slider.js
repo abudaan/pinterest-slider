@@ -12,9 +12,9 @@ class ImageSlider extends Component{
   }
 
   componentDidMount() {
-    // this.timer = setInterval(() => {
-    //   this.props.dispatch(nextImage(this.props.index))
-    // }, this.props.interval)
+    this.timer = setInterval(() => {
+      this.props.dispatch(nextImage(this.props.index))
+    }, this.props.interval)
   }
 
   componentWillUnmount() {
@@ -22,17 +22,17 @@ class ImageSlider extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    if(typeof this.timer === 'undefined' && nextProps.displayState === 'run'){
-      this.timer = setInterval(() => {
-        this.props.dispatch(nextImage(this.props.index))
-      }, this.props.interval)
-    }
+    // if(typeof this.timer === 'undefined' && nextProps.displayState === 'run'){
+    //   this.timer = setInterval(() => {
+    //     this.props.dispatch(nextImage(this.props.index))
+    //   }, this.props.interval)
+    // }
   }
 
   render(){
-    if(this.props.displayState !== 'run'){
-      return false
-    }
+    // if(this.props.displayState !== 'run'){
+    //   return false
+    // }
 
     let image = this.props.images[this.props.index]
     return (
@@ -46,11 +46,10 @@ class ImageSlider extends Component{
 }
 
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   const {pinsById, slider} = state
 
   return {
-    displayState: ownProps.displayState,
     images: pinsById.images || null,
     index: slider.index,
     interval: slider.interval
@@ -68,7 +67,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 
 ImageSlider.propTypes = {
-  displayState: PropTypes.string.isRequired,
+//  displayState: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   images: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,

@@ -11,9 +11,9 @@ class Controls extends Component{
 
   render(){
 
-    if(this.props.displayState !== 'configure'){
-      return false
-    }
+    // if(this.props.displayState !== 'configure'){
+    //   return false
+    // }
 
     let boards = this.props.boards;
     let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
@@ -53,7 +53,7 @@ class Controls extends Component{
 
 Controls.propTypes = {
   boards: PropTypes.object.isRequired,
-  displayState: PropTypes.string.isRequired,
+//  displayState: PropTypes.string.isRequired,
   interval: PropTypes.number.isRequired,
   selectBoard: PropTypes.func.isRequired,
   selectedBoard: PropTypes.string

@@ -19,13 +19,23 @@ class App extends Component{
   }
 
   render(){
-    return (
-      <div>
-        <Authorize displayState={this.props.displayState}/>
-        <Controls displayState={this.props.displayState}/>
-        <ImageSlider displayState={this.props.displayState}/>
-      </div>
-    )
+    switch(this.props.displayState){
+      case 'authorize':
+        return <Authorize/>
+      case 'configure':
+        return <Controls/>
+      case 'run':
+        return <ImageSlider/>
+      default:
+        return false;
+    }
+    // return (
+    //   <div>
+    //     <Authorize displayState={this.props.displayState}/>
+    //     <Controls displayState={this.props.displayState}/>
+    //     <ImageSlider displayState={this.props.displayState}/>
+    //   </div>
+    // )
   }
 }
 
