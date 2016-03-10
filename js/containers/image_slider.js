@@ -22,7 +22,7 @@ class ImageSlider extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.displayState === 'run'){
+    if(typeof this.timer === 'undefined' && nextProps.displayState === 'run'){
       this.timer = setInterval(() => {
         this.props.dispatch(nextImage(this.props.index))
       }, this.props.interval)
