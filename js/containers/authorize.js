@@ -4,15 +4,13 @@ import {login} from '../actions/pinterest_actions'
 
 class Authorize extends Component{
 
+  static displayName = 'Authorize';
+
   constructor(props){
     super(props)
   }
 
   render(){
-    // if(this.props.displayState !== 'authorize'){
-    //   return false
-    // }
-
     return (
       <button onClick={() => this.props.dispatch(login())}>
         {"authorize"}
@@ -23,7 +21,6 @@ class Authorize extends Component{
 
 Authorize.propTypes = {
   dispatch: PropTypes.func.isRequired
-//  displayState: PropTypes.string.isRequired
 }
 
 const mapDispatchToProps = function(dispatch){

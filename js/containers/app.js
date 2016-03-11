@@ -26,8 +26,10 @@ class App extends Component{
         return <Controls/>
       case 'run':
         return <ImageSlider/>
+      case 'loading':
+        return <div className={'loading'}>{'loading'}</div>;
       default:
-        return false;
+        return false
     }
     // return (
     //   <div>
@@ -40,12 +42,12 @@ class App extends Component{
 }
 
 App.propTypes = {
-  displayState: PropTypes.string,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  displayState: PropTypes.string
 }
 
 const mapStateToProps = (state) => {
-  const {session, pinsById} = state
+  const {session} = state
   let {displayState = ''} = session
   return {
     displayState

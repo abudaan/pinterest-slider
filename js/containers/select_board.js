@@ -4,6 +4,8 @@ import {getPins} from '../actions/pinterest_actions'
 
 class SelectBoard extends Component{
 
+  static displayName = 'SelectBoard';
+
   constructor(props){
     super(props);
   }

@@ -9,11 +9,23 @@ function session(state = {}, action){
       return Object.assign({}, state, {
         displayState
       })
+    case actions.LOGIN:
+      return Object.assign({}, state, {
+        displayState
+      })
     case actions.LOGGED_IN:
       return Object.assign({}, state, {
         displayState
       })
     case actions.GET_BOARDS:
+      return Object.assign({}, state, {
+        displayState
+      })
+    case actions.RECEIVE_BOARDS:
+      return Object.assign({}, state, {
+        displayState
+      })
+    case actions.GET_PINS:
       return Object.assign({}, state, {
         displayState
       })
@@ -26,7 +38,7 @@ function session(state = {}, action){
   }
 }
 
-function boardsById(state = {boards: {}}, action) {
+function data(state = {boards: [], images: []}, action) {
   switch(action.type){
     case actions.RECEIVE_BOARDS:
       return Object.assign({}, state, {
@@ -36,13 +48,6 @@ function boardsById(state = {boards: {}}, action) {
       return Object.assign({}, state, {
         selectedBoard: action.board
       })
-    default:
-      return state
-  }
-}
-
-function pinsById(state = {images: []}, action) {
-  switch(action.type){
     case actions.RECEIVE_PINS:
       return Object.assign({}, state, {
         pins: action.pins,
@@ -67,8 +72,7 @@ function slider(state = {index: 0, interval: 6000}, action){
 
 const rootReducer = combineReducers({
   session,
-  boardsById,
-  pinsById,
+  data,
   slider
 })
 

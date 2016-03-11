@@ -3,10 +3,10 @@ import pdk from '../util/pdk_wrapper'
 
 
 function _receiveBoards(json){
-  let boards = {}
+  let boards = []
 
   json.map(function(b){
-    boards[b.id] = b
+    boards.push(b)
   })
 
   return {
@@ -17,11 +17,11 @@ function _receiveBoards(json){
 }
 
 function _receivePins(json){
-  let pins = {}
+  let pins = []
   let images = []
 
   json.map(function(p){
-    pins[p.id] = p
+    pins.push(p)
     images.push(p.image.original)
   })
 
@@ -40,7 +40,7 @@ export function checkSession(){
     return dispatch => {
       dispatch({
         type: actions.GET_BOARDS,
-        displayState: 'configure'
+        displayState: 'loading'
       })
       return pdk.getBoards()
         .then(e => dispatch(_receiveBoards(e)))
@@ -55,9 +55,10 @@ export function checkSession(){
 
 export function login(){
   return dispatch => {
-    // dispatch({
-    //   type: actions.LOGIN
-    // })
+    dispatch({
+      type: actions.LOGIN,
+      displayState: 'loading'
+    })
     return pdk.login()
       .then(() => {
         dispatch({
@@ -72,9 +73,10 @@ export function login(){
 
 export function getPins(boardId) {
   return dispatch => {
-    // dispatch({
-    //   type: actions.GET_PINS
-    // })
+    dispatch({
+      type: actions.GET_PINS,
+      displayState: 'loading'
+    })
     return pdk.getPins(boardId)
       .then(e => dispatch(_receivePins(e)))
   }
@@ -84,7 +86,7 @@ export function getPins(boardId) {
 export function nextImage(oldIndex){
   return (dispatch, getState) => {
     let index = oldIndex + 1
-    let max = getState().pinsById.numImages
+    let max = getState().data.numImages
     if(index === max){
       index = 0
     }

@@ -5,22 +5,19 @@ import Range from '../components/range_react'
 
 class Controls extends Component{
 
+  static displayName = 'Controls';
+
   constructor(props){
     super(props);
   }
 
   render(){
 
-    // if(this.props.displayState !== 'configure'){
-    //   return false
-    // }
-
     let boards = this.props.boards;
     let options = [<option id={'choose'} key={'choose'}>{'choose a board'}</option>]
-    for(let id of Object.keys(boards)){
-      let b = boards[id]
-      options.push(<option id={id} key={id}>{b.name}</option>)
-    }
+    boards.forEach(function(board){
+      options.push(<option id={board.id} key={board.id}>{board.name}</option>)
+    })
 
     return (
       <div>
@@ -52,8 +49,7 @@ class Controls extends Component{
 
 
 Controls.propTypes = {
-  boards: PropTypes.object.isRequired,
-//  displayState: PropTypes.string.isRequired,
+  boards: PropTypes.arrayOf(PropTypes.object).isRequired,
   interval: PropTypes.number.isRequired,
   selectBoard: PropTypes.func.isRequired,
   selectedBoard: PropTypes.string
@@ -61,11 +57,11 @@ Controls.propTypes = {
 
 
 const mapStateToProps = function(state){
-  const {boardsById, slider} = state
+  const {data, slider} = state
   return {
-    boards: boardsById.boards,
+    boards: data.boards,
     interval: slider.interval,
-    selectedBoard: boardsById.selectedBoard
+    selectedBoard: data.selectedBoard
   }
 }
 
