@@ -3,7 +3,26 @@ import {connect} from 'react-redux'
 import {nextImage} from '../actions/pinterest_actions'
 import Image from '../components/image'
 
-class ImageSlider extends Component{
+const mapStateToProps = (state) => {
+  const {data, slider} = state
+  return {
+    images: data.images,
+    index: slider.index,
+    interval: slider.interval
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onClick: () => {
+      dispatch(nextImage(ownProps.index))
+    },
+    dispatch
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class ImageSlider extends Component{
 
   static displayName = 'ImageSlider'
 
@@ -33,37 +52,11 @@ class ImageSlider extends Component{
   }
 }
 
-
-const mapStateToProps = (state) => {
-  const {data, slider} = state
-
-  return {
-    images: data.images,
-    index: slider.index,
-    interval: slider.interval
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onClick: () => {
-      dispatch(nextImage(ownProps.index))
-    },
-    dispatch
-  }
-}
-
-
+// .isRequired yields a warning because decorators aren't yet fully supported
 ImageSlider.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  images: PropTypes.arrayOf(PropTypes.object).isRequired,
-  index: PropTypes.number.isRequired,
-  interval: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired
+  dispatch: PropTypes.func,
+  images: PropTypes.arrayOf(PropTypes.object),
+  index: PropTypes.number,
+  interval: PropTypes.number,
+  onClick: PropTypes.func
 }
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ImageSlider)

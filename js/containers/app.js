@@ -6,7 +6,22 @@ import Controls from '../containers/controls'
 import ImageSlider from '../containers/image_slider'
 
 
-class App extends Component{
+const mapStateToProps = (state) => {
+  const {session} = state
+  let {displayState = ''} = session
+  return {
+    displayState
+  }
+}
+
+const mapDispatchToProps = function(dispatch){
+  return {
+    dispatch
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class App extends Component{
 
   static displayName = 'App'
 
@@ -42,25 +57,6 @@ class App extends Component{
 }
 
 App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func, // .isRequired yields a warning because decorators aren't yet fully supported
   displayState: PropTypes.string
 }
-
-const mapStateToProps = (state) => {
-  const {session} = state
-  let {displayState = ''} = session
-  return {
-    displayState
-  }
-}
-
-const mapDispatchToProps = function(dispatch){
-  return {
-    dispatch
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)

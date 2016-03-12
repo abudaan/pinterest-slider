@@ -3,9 +3,34 @@ import {connect} from 'react-redux'
 import {selectInterval, selectBoard, getPins} from '../actions/pinterest_actions'
 import Range from '../components/range_react'
 
-class Controls extends Component{
+const mapStateToProps = function(state){
+  const {data, slider} = state
+  return {
+    boards: data.boards,
+    interval: slider.interval,
+    selectedBoard: data.selectedBoard
+  }
+}
 
-  static displayName = 'Controls';
+const mapDispatchToProps = function(dispatch){
+  return {
+    selectBoard: (e) => {
+      let options = e.target.options
+      let optionId = options[e.target.selectedIndex].id
+      if(optionId !== 'choose'){
+        dispatch(selectBoard(optionId))
+      }else{
+        dispatch(selectBoard())
+      }
+    },
+    dispatch
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class Controls extends Component{
+
+  static displayName = 'Controls'
 
   constructor(props){
     super(props);
@@ -47,41 +72,10 @@ class Controls extends Component{
   }
 }
 
-
+// .isRequired yields a warning because decorators aren't yet fully supported
 Controls.propTypes = {
-  boards: PropTypes.arrayOf(PropTypes.object).isRequired,
-  interval: PropTypes.number.isRequired,
-  selectBoard: PropTypes.func.isRequired,
+  boards: PropTypes.arrayOf(PropTypes.object),
+  interval: PropTypes.number,
+  selectBoard: PropTypes.func,
   selectedBoard: PropTypes.string
 }
-
-
-const mapStateToProps = function(state){
-  const {data, slider} = state
-  return {
-    boards: data.boards,
-    interval: slider.interval,
-    selectedBoard: data.selectedBoard
-  }
-}
-
-
-const mapDispatchToProps = function(dispatch){
-  return {
-    selectBoard: (e) => {
-      let options = e.target.options
-      let optionId = options[e.target.selectedIndex].id
-      if(optionId !== 'choose'){
-        dispatch(selectBoard(optionId))
-      }else{
-        dispatch(selectBoard())
-      }
-    },
-    dispatch
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Controls)

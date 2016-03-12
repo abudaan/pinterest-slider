@@ -2,9 +2,31 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {getPins} from '../actions/pinterest_actions'
 
-class SelectBoard extends Component{
+const mapStateToProps = function(state){
+  const {boardsById} = state
+  let boards = boardsById.boards
+  return {
+    boards
+  }
+}
 
-  static displayName = 'SelectBoard';
+
+const mapDispatchToProps = function(dispatch){
+  return {
+    onChange: (e) => {
+      let options = e.target.options
+      let optionId = options[e.target.selectedIndex].id
+      if(optionId !== 'choose'){
+        dispatch(getPins(optionId))
+      }
+    }
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class SelectBoard extends Component{
+
+  static displayName = 'SelectBoard'
 
   constructor(props){
     super(props);
@@ -27,34 +49,8 @@ class SelectBoard extends Component{
 }
 
 
+// .isRequired yields a warning because decorators aren't yet fully supported
 SelectBoard.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  boards: PropTypes.object.isRequired
+  onChange: PropTypes.func,
+  boards: PropTypes.object
 }
-
-
-const mapStateToProps = function(state){
-  const {boardsById} = state
-  let boards = boardsById.boards
-  return {
-    boards
-  }
-}
-
-
-const mapDispatchToProps = function(dispatch){
-  return {
-    onChange: (e) => {
-      let options = e.target.options
-      let optionId = options[e.target.selectedIndex].id
-      if(optionId !== 'choose'){
-        dispatch(getPins(optionId))
-      }
-    }
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectBoard)

@@ -6,3 +6,4 @@ build
 *.key.secure
 *.lock
 login.html
+npm.log

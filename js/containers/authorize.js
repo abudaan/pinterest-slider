@@ -2,9 +2,16 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {login} from '../actions/pinterest_actions'
 
-class Authorize extends Component{
+const mapDispatchToProps = function(dispatch){
+  return {
+    dispatch
+  }
+}
 
-  static displayName = 'Authorize';
+@connect(mapDispatchToProps)
+export default class Authorize extends Component{
+
+  static displayName = 'Authorize'
 
   constructor(props){
     super(props)
@@ -20,15 +27,5 @@ class Authorize extends Component{
 }
 
 Authorize.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func // .isRequired yields a warning because decorators aren't yet fully supported
 }
-
-const mapDispatchToProps = function(dispatch){
-  return {
-    dispatch
-  }
-}
-
-export default connect(
-  mapDispatchToProps
-)(Authorize)
