@@ -5,17 +5,18 @@ const api = 'https://api.pinterest.com/'
 const scope = 'read_public'
 let accessToken = ''
 
+
 function getSettings(){
   return {
+    method: 'GET',
+    cache: 'default',
     headers: {
       'Authorization': `BEARER ${accessToken}`
-    },
-    method: 'GET',
-    cache: 'default'
+    }
   }
 }
 
-function requestAPI(url, decription){
+function request(url, decription){
   return new Promise(
     function(resolve, reject){
       fetch(url, getSettings())
@@ -55,12 +56,12 @@ function login(){
 
 function getBoards() {
   let url = `${api}v1/me/boards/`
-  return requestAPI(url, 'getBoards');
+  return request(url, 'getBoards');
 }
 
 function getPins(boardId) {
   let url = `${api}v1/boards/${boardId}/pins/?fields=image,url`
-  return requestAPI(url, 'getPins');
+  return request(url, 'getPins');
 }
 
 function init(){
