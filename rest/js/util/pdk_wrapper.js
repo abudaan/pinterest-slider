@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch'
 
 const appKey = '4821776664906186821' // replace this key with your own key!
 const api = 'https://api.pinterest.com/'
+const scope = 'read_public'
 let accessToken = ''
 
 function getSettings(){
@@ -33,13 +34,14 @@ function requestAPI(url, decription){
 
 function login(){
   let state = `state_${new Date().getTime()}`
-  let url = `${api}oauth/?client_id=${appKey}&redirect_type=js&redirect_uri=${window.location.href}&response_type=token&scope=read_public&state=${state}`
+  let url = `${api}oauth/?client_id=${appKey}&redirect_type=js&redirect_uri=${window.location.href}&response_type=token&scope=${scope}&state=${state}`
   let popup
   return new Promise(
     function(resolve, reject){
       window.addEventListener('message', function(e){
         if(e.data.access_token && e.data.state === state){
           accessToken = e.data.access_token
+          document.cookie = `ps_${appKey}="accessToken=${accessToken}&scope=${scope}";path=/`
           resolve()
         }else{
           reject('error')
@@ -64,7 +66,7 @@ function getPins(boardId) {
 function init(){
   let cookie = document.cookie;
   if(cookie.indexOf(`ps_${appKey}`) !== -1){
-    accessToken = cookie.substring(cookie.indexOf('accessToken=') + 12, cookie.indexOf('&scope'));
+    accessToken = cookie.substring(cookie.indexOf('accessToken=') + 12, cookie.indexOf('&scope')); // quick and dirty
   }
   return {
     accessToken,
@@ -73,6 +75,5 @@ function init(){
     getPins
   }
 }
-
 
 export default init()

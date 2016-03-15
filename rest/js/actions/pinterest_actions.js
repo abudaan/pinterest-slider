@@ -4,7 +4,6 @@ import pdk from '../util/pdk_wrapper'
 
 function _receiveBoards(json){
   let boards = []
-  console.log(json)
 
   json.map(function(b){
     boards.push(b)
