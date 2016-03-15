@@ -36,7 +36,7 @@ function _receivePins(json){
 }
 
 export function checkSession(){
-  let accessToken = pdk.getAccessToken()
+  let accessToken = pdk.accessToken
   if(accessToken !== ''){
     return dispatch => {
       dispatch({
@@ -67,8 +67,7 @@ export function login(){
           displayState: 'configure'
         })
         pdk.getBoards()
-          //.then((e) => dispatch(_receiveBoards(e)))
-          .then((e) => {console.log(e)})
+          .then((e) => dispatch(_receiveBoards(e)))
       })
   }
 }

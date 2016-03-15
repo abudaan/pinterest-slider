@@ -1,122 +1,64 @@
-//import fetch from 'isomorphic-fetch'
-//import ajax from './ajax'
+import fetch from 'isomorphic-fetch'
 
-const PDK = window.PDK
 const appKey = '4821776664906186821' // replace this key with your own key!
+const api = 'https://api.pinterest.com/'
 let accessToken = ''
-const stub = 'https://api.pinterest.com/v1/'
 
-const headers = new Headers();
-//headers.append('Content-Type', 'application/json');
-//headers.append('Access-Control-Allow-Origin', 'https://abumarkub:8000/rest/');
-//headers.append('Access-Control-Allow-Headers', 'Authorization')
-//headers.append('Access-Control-Allow-Methods', 'DELETE, HEAD, GET');
-//headers.append('Access-Control-Allow-Origin', '*');
-headers.append('Authorization', 'BEARER ARzW0E37MvKlUKDhGIR1brqagvMKFDuxKnxcMkJC6nlHvOArkQAAAAA');
-//headers.append('Access-Control-Allow-Methods', 'DELETE, HEAD, GET, OPTIONS, POST, PUT');
-//headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Content-Range, Content-Disposition, Content-Description');
-//headers.append('Access-Control-Max-Age', '1728000');
+function getSettings(){
+  return {
+    headers: {
+      'Authorization': `BEARER ${accessToken}`
+    },
+    method: 'GET',
+    cache: 'default'
+  }
+}
 
-const settings = {
-  headers,
-  method: 'GET',
-  //mode: 'no-cors',
-  cache: 'default'
+function requestAPI(url, decription){
+  return new Promise(
+    function(resolve, reject){
+      fetch(url, getSettings())
+      .then(function(response){
+        return response.json()
+      })
+      .then(function(json){
+        resolve(json.data);
+      })
+      .catch(function(error) {
+        reject(decription, error)
+      })
+    }
+  )
 }
 
 function login(){
-  return new Promise(function (resolve, reject){
-    PDK.login({scope: 'read_public'}, function(response){
-      if (!response || response.error) {
-        reject(response)
-      } else {
-        resolve(response.data)
-      }
-    })
-  })
-}
-
-
-function sendAuthorization(url){
-  console.log('sendAuthorization')
-  let h = new Headers()
-  h.append('Access-Control-Allow-Headers', 'Authorization')
-  h.append('Access-Control-Allow-Methods', 'DELETE, HEAD, GET');
-  h.append('Access-Control-Allow-Origin', '*');
-
-  return fetch(url, {
-    headers,
-    method: 'OPTIONS'
-  })
-}
-
-
-function getBoards() {
-  let url = `${stub}me/boards/`
-
-
-  //let url = 'http://abumarkub.net/web-ar2/settings1.json'
-  //let url = 'settings1.json'
-
-  // return ajax({
-  //   url: u
-  // })
-
-  let p = new Promise(
-    function (resolve, reject){
-      sendAuthorization(url)
-      .then(
-        fetch(url, settings)
-        .then(function(response){
-          return response.json()
-        })
-        .then(function(json){
-          resolve(json.data)
-        })
-        .catch(function(error) {
-          console.log('Request failed', error)
-        })
-      )
+  let state = `state_${new Date().getTime()}`
+  let url = `${api}oauth/?client_id=${appKey}&redirect_type=js&redirect_uri=${window.location.href}&response_type=token&scope=read_public&state=${state}`
+  let popup
+  return new Promise(
+    function(resolve, reject){
+      window.addEventListener('message', function(e){
+        if(e.data.access_token && e.data.state === state){
+          accessToken = e.data.access_token
+          resolve()
+        }else{
+          reject('error')
+        }
+        popup.close()
+      })
+      popup = window.open(url, 'login', 'width=625; height=470');
     }
   )
+}
 
-  // let p = new Promise(
-  //   function (resolve, reject){
-  //     fetch(url, settings)
-  //     .then(function(response){
-  //       console.log(response)
-  //       return response.text()
-  //     })
-  //     .then(function(text){
-  //       console.log('Request successful', text);
-  //     })
-  //     .catch(function(error) {
-  //       console.log('Request failed', error)
-  //     })
-  //   }
-  // )
-
-  return p;
-
-//  return new Promise(function(resolve, reject){})
-
+function getBoards() {
+  let url = `${api}v1/me/boards/`
+  return requestAPI(url, 'getBoards');
 }
 
 function getPins(boardId) {
-  return new Promise(function(resolve, reject){
-    PDK.request(`/boards/${boardId}/pins/`, {fields: 'image, url'}, function (response) {
-      if (!response || response.error) {
-        reject(response)
-      } else {
-        resolve(response.data)
-      }
-    })
-  })
-}
-
-function getAccessToken(){
-  //let session = PDK.getSession() || {accessToken: ''}
-  return accessToken
+  let url = `${api}v1/boards/${boardId}/pins/?fields=image,url`
+  return requestAPI(url, 'getPins');
 }
 
 function init(){
@@ -127,7 +69,6 @@ function init(){
   return {
     accessToken,
     login,
-    getAccessToken,
     getBoards,
     getPins
   }
