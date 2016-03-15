@@ -16,7 +16,7 @@ function getSettings(){
   }
 }
 
-function request(url, decription){
+function request(url, description){
   return new Promise(
     function(resolve, reject){
       fetch(url, getSettings())
@@ -27,7 +27,7 @@ function request(url, decription){
         resolve(json.data);
       })
       .catch(function(error) {
-        reject(decription, error)
+        reject(description, error)
       })
     }
   )
