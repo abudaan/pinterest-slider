@@ -28,7 +28,7 @@ function getBoards() {
 
 function getPins(boardId) {
   return new Promise(function(resolve, reject){
-    PDK.request(`/boards/${boardId}/pins/`, {fields: 'image'}, function (response) {
+    PDK.request(`/boards/${boardId}/pins/`, {fields: 'image, url'}, function (response) {
       if (!response || response.error) {
         reject(response)
       } else {

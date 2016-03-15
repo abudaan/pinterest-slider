@@ -6,29 +6,11 @@ function session(state = {}, action){
   let displayState = action.displayState
   switch (action.type) {
     case actions.CHECK_SESSION:
-      return Object.assign({}, state, {
-        displayState
-      })
     case actions.LOGIN:
-      return Object.assign({}, state, {
-        displayState
-      })
     case actions.LOGGED_IN:
-      return Object.assign({}, state, {
-        displayState
-      })
     case actions.GET_BOARDS:
-      return Object.assign({}, state, {
-        displayState
-      })
     case actions.RECEIVE_BOARDS:
-      return Object.assign({}, state, {
-        displayState
-      })
     case actions.GET_PINS:
-      return Object.assign({}, state, {
-        displayState
-      })
     case actions.RECEIVE_PINS:
       return Object.assign({}, state, {
         displayState
